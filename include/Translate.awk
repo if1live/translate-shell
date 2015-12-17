@@ -62,10 +62,16 @@ function postprocess(text) {
 
 # Send an HTTP request and get response from Google Translate.
 function getResponse(text, sl, tl, hl,    content, header, url) {
+    cmd = "./include/calc_tk.py " text
+    while ( ( cmd | getline tk ) > 0 ) {}
+    close(cmd)
+
     url = HttpPathPrefix "/translate_a/single?client=t"                 \
         "&ie=UTF-8&oe=UTF-8"                                            \
         "&dt=bd&dt=ex&dt=ld&dt=md&dt=qca&dt=rw&dt=rm&dt=ss&dt=t&dt=at"  \
-        "&q=" preprocess(text) "&sl=" sl "&tl=" tl "&hl=" hl "&tk"
+        "&q=" preprocess(text) "&sl=" sl "&tl=" tl "&hl=" hl \
+        "&tk=" tk
+
     header = "GET " url " HTTP/1.1\n"           \
         "Host: " HttpHost "\n"                  \
         "Connection: close\n"
